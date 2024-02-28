@@ -98,19 +98,19 @@ void ball6_near_offensive() {
 ASSET(PUSH_BACK_TRIBALLS_txt)
 void match_load() {
   // set pose and follow path
-  chassis.setPose(41, -54.5, -90);
+  chassis.setPose(41, -55, -90);
   chassis.follow(PUSH_BACK_TRIBALLS_txt, 10, 2400, false);
   chassis.waitUntilDone();
 
   // go to match load
-  chassis.moveToPoint(62, -42, 1200, {.minSpeed = 60});
+  chassis.moveToPoint(60, -40, 1200, {.minSpeed = 60});
   chassis.turnToPoint(-60, 2, 1200);
   chassis.waitUntilDone();
   chassis.tank(-30, -30);
   pros::delay(300);
   chassis.tank(0, 0);
   back_wings.set_value(true);
-  chassis.turnToPoint(-60, 2, 800);
+  chassis.turnToPoint(-60, 2, 800); //*/
 }
 
 ASSET(PUSH_RIGHT_SKILLS_txt)
@@ -119,63 +119,67 @@ void skills() {
   match_load();
 
   cata.move_velocity(53);
-  pros::delay(27e3);
+  // pros::delay(2e3);
   cata.move(10);
   back_wings.set_value(false);
 
   // go to push up
-  chassis.turnToPoint(3, -24, 800);
-  chassis.moveToPoint(3, -24, 1200);
+  chassis.turnToPoint(18, -24, 800);
+  chassis.moveToPoint(18, -24, 1200);
   chassis.turnToHeading(0, 1200);
   chassis.waitUntilDone();
 
   // push up
   front_wings.set_value(true);
   intake.move_velocity(-400);
-  chassis.moveToPoint(3, 42, 2000, {.minSpeed = 60});
-  chassis.moveToPoint(3, 38, 1000, {.forwards = false});
-  chassis.moveToPoint(3, 42, 1000, {.minSpeed = 100});
-  chassis.moveToPoint(3, 35, 1000, {.forwards = false});
+  chassis.moveToPoint(18, 40, 2000, {.minSpeed = 60});
+  chassis.moveToPoint(18, 36, 1000, {.forwards = false});
+  chassis.moveToPoint(18, 40, 1000, {.minSpeed = 100});
+  chassis.moveToPoint(18, 33, 1000, {.forwards = false});
 
   // set up for push
   chassis.turnToPoint(45, 48, 1200);
-  chassis.moveToPoint(45, 48, 1500);
+  chassis.moveToPoint(45, 48, 1500, {.maxSpeed = 90});
   chassis.turnToPoint(24, 60, 1200);
 
   // push
-  chassis.moveToPoint(24, 60, 2500, {.minSpeed = 110, .earlyExitRange = 10});
+
+  chassis.moveToPoint(24, 60, 2500, {.minSpeed = 110, .earlyExitRange = 7});
   chassis.waitUntilDone();
-  chassis.moveToPoint(-36, 63, 1500, {.minSpeed = 110, .earlyExitRange = 10});
+  chassis.moveToPoint(-36, 63, 2000, {.minSpeed = 110, .earlyExitRange = 7});
   chassis.waitUntil(3);
   front_wings.set_value(false);
   chassis.waitUntil(28);
   front_wings.set_value(true);
-  chassis.moveToPoint(-60, 36, 1200, {.minSpeed = 100, .earlyExitRange = 10});
-  chassis.moveToPoint(-60, 28, 1200, {.forwards = false, .minSpeed = 127});
-  
-  // back push
-  chassis.moveToPoint(-60, 31, 1200, {.forwards = false});
-  chassis.turnToHeading(0,1200);
+  chassis.moveToPoint(-67, 30, 1800, {.minSpeed = 100});
+  chassis.turnToHeading(-180, 600);
 
-  chassis.moveToPoint(-60, 27, 1200, {.minSpeed = 110});
+  // back push
+  chassis.moveToPoint(-67, 40, 1200, {.forwards = false, .minSpeed = 40});
+  front_wings.set_value(false);
+
+  chassis.turnToHeading(0, 1200);
+  chassis.moveToPoint(-67, 32, 1200,
+                      {.forwards = false, .maxSpeed = 80, .minSpeed = 60});
+  chassis.moveToPoint(-67, 40, 1200);
+  chassis.moveToPoint(-67, 27, 1200, {.forwards = false, .minSpeed = 110});
+  front_wings.set_value(true);
 
   // go to main push
-  chassis.turnToPoint(-48, 48, 1000);
-  chassis.moveToPoint(-48, 48, 1200);
+  chassis.turnToPoint(-56, 48, 1000);
+  front_wings.set_value(false);
+  chassis.moveToPoint(-56, 48, 1200);
 
   chassis.turnToPoint(-12, 12, 1200);
   chassis.moveToPoint(-12, 12, 1500);
 
-  // main push
+  /*/ main push
   chassis.turnToHeading(90, 1200);
   chassis.moveToPoint(-44, 12, 2000, {.forwards = false, .minSpeed = 90});
-  back_wings.set_value(true);
 
   // side push
-  chassis.turnToPoint(-12, -12, 1200);
-  back_wings.set_value(false);
-  chassis.moveToPoint(-12, -12, 1500);
-  chassis.turnToHeading(90, 1200);
-  chassis.moveToPoint(-44, -12, 1500, {.forwards = false, .minSpeed = 90});
-  back_wings.set_value(true);//*/
+  chassis.turnToPoint(-12, 0, 1200);
+  chassis.moveToPose(-12, 0, -180, 1200, {.minSpeed = 60, .earlyExitRange = 7});
+  front_wings.set_value(true);
+  chassis.moveToPose(-12, -12, -90, 1200);//*/
 }
