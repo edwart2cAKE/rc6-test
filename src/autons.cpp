@@ -95,54 +95,87 @@ void ball6_near_offensive() {
   chassis.moveToPoint(-60, -27.5, 1200);
   intake.move_velocity(-400);
 }
-
 ASSET(PUSH_BACK_TRIBALLS_txt)
-ASSET(PUSH_RIGHT_SKILLS_txt)
-void skills() {
+void match_load() {
   // set pose and follow path
   chassis.setPose(41, -54.5, -90);
   chassis.follow(PUSH_BACK_TRIBALLS_txt, 10, 2400, false);
   chassis.waitUntilDone();
 
   // go to match load
-  chassis.moveToPoint(62, -40, 1200, {.minSpeed = 60});
-  chassis.turnToPoint(-60, 0, 1200);
+  chassis.moveToPoint(62, -42, 1200, {.minSpeed = 60});
+  chassis.turnToPoint(-60, 2, 1200);
   chassis.waitUntilDone();
-  chassis.tank(-20, -20);
+  chassis.tank(-30, -30);
   pros::delay(300);
   chassis.tank(0, 0);
-
-  // match load
-  chassis.turnToPoint(-60, 2, 600);
   back_wings.set_value(true);
+  chassis.turnToPoint(-60, 2, 800);
+}
 
-  cata.move_velocity(50);
-  pros::delay(30e3);
+ASSET(PUSH_RIGHT_SKILLS_txt)
+void skills() {
+  // match load
+  match_load();
+
+  cata.move_velocity(53);
+  pros::delay(27e3);
   cata.move(10);
   back_wings.set_value(false);
 
-  // go topush up
-  chassis.turnToPoint(8, -24, 800);
-  chassis.moveToPoint(8, -24, 1200);
+  // go to push up
+  chassis.turnToPoint(3, -24, 800);
+  chassis.moveToPoint(3, -24, 1200);
   chassis.turnToHeading(0, 1200);
   chassis.waitUntilDone();
 
   // push up
   front_wings.set_value(true);
-  chassis.moveToPoint(8, 41, 1500);
+  intake.move_velocity(-400);
+  chassis.moveToPoint(3, 42, 2000, {.minSpeed = 60});
+  chassis.moveToPoint(3, 38, 1000, {.forwards = false});
+  chassis.moveToPoint(3, 42, 1000, {.minSpeed = 100});
+  chassis.moveToPoint(3, 35, 1000, {.forwards = false});
 
   // set up for push
-  chassis.moveToPoint(8, 34, 1200, {.forwards = false});
-  chassis.turnToPoint(48, 48, 1200);
-  chassis.moveToPoint(48, 48, 1200);
-  chassis.turnToHeading(-45, 1200);
+  chassis.turnToPoint(45, 48, 1200);
+  chassis.moveToPoint(45, 48, 1500);
+  chassis.turnToPoint(24, 60, 1200);
 
   // push
-  chassis.follow(PUSH_RIGHT_SKILLS_txt, 10, 4000);
+  chassis.moveToPoint(24, 60, 2500, {.minSpeed = 110, .earlyExitRange = 10});
+  chassis.waitUntilDone();
+  chassis.moveToPoint(-36, 63, 1500, {.minSpeed = 110, .earlyExitRange = 10});
+  chassis.waitUntil(3);
+  front_wings.set_value(false);
+  chassis.waitUntil(28);
+  front_wings.set_value(true);
+  chassis.moveToPoint(-60, 36, 1200, {.minSpeed = 100, .earlyExitRange = 10});
+  chassis.moveToPoint(-60, 28, 1200, {.forwards = false, .minSpeed = 127});
+  
+  // back push
+  chassis.moveToPoint(-60, 31, 1200, {.forwards = false});
+  chassis.turnToHeading(0,1200);
 
-}
+  chassis.moveToPoint(-60, 27, 1200, {.minSpeed = 110});
 
-void ani_practice() {
-  // set pose
-  chassis.setPose(41, -54.5, -90);
+  // go to main push
+  chassis.turnToPoint(-48, 48, 1000);
+  chassis.moveToPoint(-48, 48, 1200);
+
+  chassis.turnToPoint(-12, 12, 1200);
+  chassis.moveToPoint(-12, 12, 1500);
+
+  // main push
+  chassis.turnToHeading(90, 1200);
+  chassis.moveToPoint(-44, 12, 2000, {.forwards = false, .minSpeed = 90});
+  back_wings.set_value(true);
+
+  // side push
+  chassis.turnToPoint(-12, -12, 1200);
+  back_wings.set_value(false);
+  chassis.moveToPoint(-12, -12, 1500);
+  chassis.turnToHeading(90, 1200);
+  chassis.moveToPoint(-44, -12, 1500, {.forwards = false, .minSpeed = 90});
+  back_wings.set_value(true);//*/
 }

@@ -24,7 +24,7 @@ pros::ADIDigitalOut back_wings(7, back_wings_engaged);
 
 // front wings
 bool front_wings_engaged = false;
-pros::ADIDigitalOut front_wings(8, front_wings_engaged);
+pros::ADIDigitalOut front_wings(6, front_wings_engaged);
 
 // cata / slapper
 bool shooting_cata = false;
@@ -36,7 +36,7 @@ pros::MotorGroup right_motors({rT, rM, rF});
 
 lemlib::Drivetrain drivetrain{&left_motors, &right_motors,
                               10.55,        lemlib::Omniwheel::NEW_325,
-                              1000 / 3,     8};
+                              1000 / 3,     20};
 
 // sensors (only inertial right now)
 pros::Imu inertial_sensor(10);
@@ -101,9 +101,9 @@ void initialize() {
     lemlib::Pose pose(0, 0, 0);
     while (true) {
       // print robot location to the brain screen
-      pros::lcd::print(0, "X: %f", chassis.getPose().x);         // x
-      pros::lcd::print(1, "Y: %f", chassis.getPose().y);         // y
-      pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+      pros::lcd::print(3, "X: %f", chassis.getPose().x);         // x
+      pros::lcd::print(4, "Y: %f", chassis.getPose().y);         // y
+      pros::lcd::print(5, "Theta: %f", chassis.getPose().theta); // heading
 
       // print to controller screen
       master.print(4, 0, "Y: %f", chassis.getPose().y);
@@ -187,7 +187,8 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-float curve = 2.0;
+float curve = 2.3;
+bool match_loaded = false;
 void opcontrol() {
   // set brake type (driver likes brake)
   chassis.setBrakeMode(MOTOR_BRAKE_BRAKE);
@@ -221,7 +222,7 @@ void opcontrol() {
       shooting_cata = !shooting_cata;
     }
     if (shooting_cata) {
-      cata.move_velocity(50);
+      cata.move_velocity(53);
     } else {
       cata.brake();
     }
@@ -246,8 +247,9 @@ void opcontrol() {
     }
 
     // auto skills
-    if (auton_select == 2 && master.get_digital_new_press(DIGITAL_Y)) {
-      skills();
+    if (auton_select == 2 && master.get_digital_new_press(DIGITAL_Y) && !match_loaded) {
+      match_load();
+      match_loaded = true;
     }
 
     pros::delay(20);
