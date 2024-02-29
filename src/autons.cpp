@@ -1,5 +1,6 @@
 #include "autons.hpp"
 #include "lemlib/asset.hpp"
+#include "lemlib/chassis/chassis.hpp"
 #include "pros/rtos.hpp"
 
 void lateral_tuning(int inches, int max_iter, float curve) {
@@ -56,130 +57,184 @@ void far_defensive() {
 
   // take tribal out
   const int wing_dist = 13;
-  chassis.moveToPoint(-58, -39, 1200);
-  chassis.turnToPoint(-58 + wing_dist, -40 - wing_dist, 1200);
-  chassis.moveToPoint(-58 + wing_dist, -40 - wing_dist, 2000, {.maxSpeed = 90});
+  chassis.moveToPoint(-60, -39, 1200);
+  chassis.turnToPoint(-60 + wing_dist, -40 - wing_dist, 1200);
+  chassis.moveToPoint(-60 + wing_dist, -40 - wing_dist, 2000, {.maxSpeed = 90});
   back_wings.set_value(true);
 
   // go to bar
-  chassis.turnToPoint(-8.5, -60, 1200);
-  chassis.moveToPoint(-8.5, -60, 2400, {.maxSpeed = 90});
+  chassis.turnToPoint(-8, -60, 1200);
+  chassis.moveToPoint(-8, -60, 2400, {.maxSpeed = 90});
   chassis.waitUntil(2);
   back_wings.set_value(false);
+  chassis.turnToHeading(90, 800);
 }
-
+ASSET(PUSH_BACK_TRIBALLS_txt)
 void ball6_near_offensive() {
   // set pose
-  chassis.setPose(17, -60, -90);
+  chassis.setPose(24, -60, -90);
 
   // go to mid triball
-  chassis.moveToPoint(6, -60, 1200);
+  chassis.moveToPoint(9.25, -60, 1200);
   chassis.waitUntil(9);
   intake.move_velocity(400);
   chassis.waitUntilDone();
   pros::delay(300);
 
-  // unload matchload
+  /*/ unload matchload
   const int matchload_movement = 13;
-  chassis.moveToPoint(40, -58, 2000, {.forwards = false});
+  chassis.moveToPoint(42, -60, 2000, {.forwards = false});
   // move hiang
-  chassis.turnToHeading(-225, 1000);
-  chassis.moveToPoint(40 + matchload_movement, -58 + matchload_movement, 1200,
+  chassis.turnToHeading(-135, 1000);
+  intake.move(0);
+  chassis.moveToPoint(42 + matchload_movement, -60 + matchload_movement, 1200,
                       {.forwards = false});
   back_wings.set_value(true);
-  chassis.turnToPoint(60, -10e5, 800);
-  chassis.moveToPoint(60, -36, 1200, {.forwards = false});
-  chassis.waitUntilDone();
+  chassis.turnToHeading(-180, 1200);
+  chassis.moveToPoint(53, -36, 1200, {.forwards = false});
+
   back_wings.set_value(false);
-  chassis.turnToPoint(60, 0, 1000);
-  chassis.moveToPoint(-60, -27.5, 1200);
-  intake.move_velocity(-400);
+  chassis.turnToPoint(53, 0, 1000);
+  chassis.moveToPoint(53, -27.5, 1200);
+  intake.move_velocity(-400);//*/
+
+  // unload
+  chassis.moveToPoint(41, -60, 1200, {.forwards = false});
+  chassis.follow(PUSH_BACK_TRIBALLS_txt, 10, 2400, false);
+  chassis.waitUntil(10);
+  back_wings.set_value(true);
+  chassis.moveToPoint(60, -40, 1200);
+  chassis.turnToHeading(0, 1200);
 }
-ASSET(PUSH_BACK_TRIBALLS_txt)
+
+void ball4_safe() {
+  // set pose
+  chassis.setPose(33, -56, 0);
+
+  // put first
+  chassis.moveToPoint(36, -24, 1500);
+  chassis.turnToPoint(48, 0, 1200);
+  chassis.waitUntilDone();
+  intake.move_velocity(-400);
+  pros::delay(300);
+
+  // get second
+  chassis.turnToPoint(-9, -24, 1200);
+  chassis.moveToPoint(-9.5, -24, 1200);
+  intake.move_velocity(400);
+  chassis.waitUntilDone();
+  pros::delay(300);
+
+  // outake second
+  chassis.turnToPoint(-48, 0, 1200);
+  chassis.waitUntilDone();
+  intake.move_velocity(-400);
+  pros::delay(300);
+
+  // go to third
+  chassis.moveToPoint(10, 0, 1200);
+}
+
 void match_load() {
   // set pose and follow path
   chassis.setPose(41, -55, -90);
   chassis.follow(PUSH_BACK_TRIBALLS_txt, 10, 2400, false);
   chassis.waitUntilDone();
+  chassis.moveToPoint(60, -36, 800, {.minSpeed = 80});
+  chassis.moveToPoint(60, -28, 800, {.forwards = false, .minSpeed = 110});
 
   // go to match load
   chassis.moveToPoint(60, -40, 1200, {.minSpeed = 60});
-  chassis.turnToPoint(-60, 2, 1200);
+  chassis.turnToPoint(-60, 9.25, 1200);
   chassis.waitUntilDone();
   chassis.tank(-30, -30);
   pros::delay(300);
   chassis.tank(0, 0);
   back_wings.set_value(true);
-  chassis.turnToPoint(-60, 2, 800); //*/
+  chassis.turnToPoint(-60, 9.25, 800); //*/
 }
 
 ASSET(PUSH_RIGHT_SKILLS_txt)
+ASSET(PUSH_LEFT_FINAL1_txt)
 void skills() {
   // match load
   match_load();
 
-  cata.move_velocity(53);
-  // pros::delay(2e3);
+  cata.move_velocity(75);
+  pros::delay(22e3);
   cata.move(10);
   back_wings.set_value(false);
 
   // go to push up
-  chassis.turnToPoint(18, -24, 800);
-  chassis.moveToPoint(18, -24, 1200);
+  chassis.turnToPoint(12, -24, 800);
+  chassis.moveToPoint(12, -24, 1200);
   chassis.turnToHeading(0, 1200);
   chassis.waitUntilDone();
 
   // push up
   front_wings.set_value(true);
   intake.move_velocity(-400);
-  chassis.moveToPoint(18, 40, 2000, {.minSpeed = 60});
-  chassis.moveToPoint(18, 36, 1000, {.forwards = false});
-  chassis.moveToPoint(18, 40, 1000, {.minSpeed = 100});
-  chassis.moveToPoint(18, 33, 1000, {.forwards = false});
+  chassis.moveToPoint(12, 38.5, 1500, {.minSpeed = 120});
+  chassis.moveToPoint(12, 34.5, 800, {.forwards = false, .minSpeed = 90});
+  chassis.moveToPoint(12, 38.5, 800, {.minSpeed = 110});
+  chassis.moveToPoint(12, 31.5, 800, {.forwards = false, .minSpeed = 90});
 
   // set up for push
-  chassis.turnToPoint(45, 48, 1200);
-  chassis.moveToPoint(45, 48, 1500, {.maxSpeed = 90});
-  chassis.turnToPoint(24, 60, 1200);
+  chassis.turnToPoint(45, 48, 1000, {.minSpeed = 110});
+  chassis.moveToPoint(45, 48, 1200, {.maxSpeed = 90});
+  chassis.turnToPoint(24, 62, 1000);
 
   // push
 
-  chassis.moveToPoint(24, 60, 2500, {.minSpeed = 110, .earlyExitRange = 7});
+  chassis.moveToPoint(24, 62, 2000, {.minSpeed = 90, .earlyExitRange = 7});
   chassis.waitUntilDone();
-  chassis.moveToPoint(-36, 63, 2000, {.minSpeed = 110, .earlyExitRange = 7});
-  chassis.waitUntil(3);
+  chassis.moveToPoint(-36, 63, 1500, {.minSpeed = 110, .earlyExitRange = 7});
+  chassis.waitUntil(6);
   front_wings.set_value(false);
   chassis.waitUntil(28);
   front_wings.set_value(true);
-  chassis.moveToPoint(-67, 30, 1800, {.minSpeed = 100});
-  chassis.turnToHeading(-180, 600);
+  chassis.moveToPoint(-70, 30, 1500, {.minSpeed = 127});
+  chassis.turnToHeading(-180, 400);
 
-  // back push
-  chassis.moveToPoint(-67, 40, 1200, {.forwards = false, .minSpeed = 40});
+  // back push 1
   front_wings.set_value(false);
 
-  chassis.turnToHeading(0, 1200);
-  chassis.moveToPoint(-67, 32, 1200,
-                      {.forwards = false, .maxSpeed = 80, .minSpeed = 60});
-  chassis.moveToPoint(-67, 40, 1200);
-  chassis.moveToPoint(-67, 27, 1200, {.forwards = false, .minSpeed = 110});
-  front_wings.set_value(true);
+  // go to up push
+  chassis.moveToPoint(-48, 52, 1000, {.forwards = false});
+  chassis.turnToPoint(-38, 36, 1000);
+  chassis.moveToPoint(-38, 36, 1000);
+  chassis.turnToPoint(-14, 36, 1000);
+  chassis.moveToPoint(-14, 36, 1000);
+  chassis.turnToHeading(50, 1000);
 
-  // go to main push
-  chassis.turnToPoint(-56, 48, 1000);
-  front_wings.set_value(false);
-  chassis.moveToPoint(-56, 48, 1200);
+  // up push
+  chassis.moveToPoint(-48, 6, 800, {.forwards = false, .minSpeed = 127});
+  back_wings.set_value(true);
+  chassis.moveToPoint(-34, 6, 800, {.minSpeed = 110});
+  chassis.moveToPoint(-48, 6, 800, {.forwards = false, .minSpeed = 127});
+  chassis.moveToPoint(-14, 6, 800, {.minSpeed = 110});
+  back_wings.set_value(false);
 
-  chassis.turnToPoint(-12, 12, 1200);
-  chassis.moveToPoint(-12, 12, 1500);
+  // down push
+  chassis.turnToPoint(-14, -14, 1000);
+  chassis.moveToPoint(-14, -14, 1500);
 
-  /*/ main push
-  chassis.turnToHeading(90, 1200);
-  chassis.moveToPoint(-44, 12, 2000, {.forwards = false, .minSpeed = 90});
+  chassis.moveToPoint(-48, -8, 1000, {.forwards = false, .minSpeed = 127});
+  back_wings.set_value(true);
+  chassis.turnToPoint(-24, -8, 1000);
+  chassis.moveToPoint(-24, -8, 800, {.minSpeed = 100});
+  chassis.moveToPoint(-49, -8, 800, {.forwards = false, .minSpeed = 127});
+  chassis.waitUntilDone();
 
-  // side push
-  chassis.turnToPoint(-12, 0, 1200);
-  chassis.moveToPose(-12, 0, -180, 1200, {.minSpeed = 60, .earlyExitRange = 7});
-  front_wings.set_value(true);
-  chassis.moveToPose(-12, -12, -90, 1200);//*/
+  // side push left
+  back_wings.set_value(false);
+  chassis.moveToPoint(-24, -36, 1000, {.minSpeed = 110});
+  chassis.turnToPoint(-48, -36, 1000);
+  chassis.moveToPoint(-48, -36, 1000);
+  chassis.turnToHeading(-45, 700);
+  chassis.moveToPose(-24, -60, 90, 1000, {.forwards = false});
+
+  chassis.turnToHeading(-90, 400);
+  chassis.follow(PUSH_LEFT_FINAL1_txt, 10, 1800);
+  chassis.moveToPoint(36, 60,  400);
 }

@@ -222,7 +222,7 @@ void opcontrol() {
       shooting_cata = !shooting_cata;
     }
     if (shooting_cata) {
-      cata.move_velocity(53);
+      cata.move_velocity(75);
     } else {
       cata.brake();
     }
