@@ -145,13 +145,13 @@ void match_load() {
 
   // go to match load
   chassis.moveToPoint(60, -40, 1200, {.minSpeed = 60});
-  chassis.turnToPoint(-60, 9.25, 1200);
+  chassis.turnToPoint(-60, 10, 1200);
   chassis.waitUntilDone();
   chassis.tank(-30, -30);
   pros::delay(300);
   chassis.tank(0, 0);
   back_wings.set_value(true);
-  chassis.turnToPoint(-60, 9.25, 1000); //*/
+  chassis.turnToPoint(-60, 10, 1000); //*/
 }
 
 ASSET(PUSH_RIGHT_SKILLS_txt)
@@ -160,14 +160,14 @@ void skills() {
   // match load
   match_load();
 
-  cata.move_velocity(75);
+  //cata.move_velocity(75);
   //pros::delay(22e3);
-  cata.move(10);
+  //cata.move(10);
   back_wings.set_value(false);
 
   // go to push up
-  chassis.turnToPoint(14, -24, 1000);
-  chassis.moveToPoint(14, -24, 1200);
+  chassis.turnToPoint(12, -26, 1000);
+  chassis.moveToPoint(12, -26, 1200);
   chassis.turnToHeading(0, 1200);
   chassis.waitUntilDone();
 
@@ -192,7 +192,7 @@ void skills() {
   front_wings.set_value(false);
   chassis.waitUntil(28);
   front_wings.set_value(true);
-  chassis.moveToPoint(-70, 30, 1500, {.minSpeed = 127});
+  chassis.moveToPoint(-59, 24, 1500, {.minSpeed = 127});
   chassis.turnToHeading(-180, 400);
 
   front_wings.set_value(false);
@@ -214,24 +214,27 @@ void skills() {
   back_wings.set_value(false);
 
   // left push
-  chassis.turnToPoint(-14, 0, 1200);
-  chassis.moveToPoint(-14, 0, 1500);
+  chassis.turnToPoint(-5, -2, 1200);
+  chassis.moveToPoint(-5, -2, 1500);
 
   chassis.turnToHeading(90, 1200);
-  chassis.moveToPoint(-48, 0, 1000, {.forwards = false, .minSpeed = 127});
+  chassis.moveToPoint(-48, -2, 1000, {.forwards = false, .minSpeed = 127});
   back_wings.set_value(true);
-  chassis.turnToPoint(-24, -0, 1200);
-  chassis.moveToPoint(-24, -0, 1000, {.minSpeed = 100});
-  chassis.moveToPoint(-49, -0, 1000, {.forwards = false, .minSpeed = 127});
+  chassis.turnToPoint(-24, -2, 1200);
+  chassis.moveToPoint(-24, -2, 1000, {.minSpeed = 100});
+  chassis.moveToPoint(-49, -2, 1000, {.forwards = false, .minSpeed = 127});
   chassis.waitUntilDone();
 
   // side push left
   back_wings.set_value(false);
   chassis.moveToPoint(-24, -36, 1200, {.minSpeed = 110});
   chassis.turnToPoint(-48, -36, 1200);
-  chassis.moveToPoint(-48, -36, 1200);
-  chassis.moveToPose(-24, -60, 90, 1500, {.forwards = false,.lead=1});
-
+   front_wings.set_value(true);
+  chassis.moveToPoint(-52, -36, 1200);
+  chassis.waitUntilDone();
+  front_wings.set_value(false);
+  chassis.moveToPose(-36, -70, 90, 1500, {.forwards = false,.lead=1});
+  chassis.moveToPose(-36, -24, 90, 800);
   chassis.turnToHeading(-90, 400);
   chassis.follow(PUSH_LEFT_FINAL_txt, 10, 2400);
   chassis.moveToPoint(36, 60, 400);
