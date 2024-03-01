@@ -235,13 +235,13 @@ void opcontrol() {
     }
 
     // back wings
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
       back_wings_engaged = !back_wings_engaged;
       back_wings.set_value(back_wings_engaged);
     }
 
     // front wings
-    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+    if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)) {
       front_wings_engaged = !front_wings_engaged;
       front_wings.set_value(front_wings_engaged);
     }
