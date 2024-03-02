@@ -8,8 +8,8 @@ pros::Motor rM(16, pros::E_MOTOR_GEARSET_18, false);
 pros::Motor rT(15, pros::E_MOTOR_GEARSET_18, true);
 
 // left motors
-pros::Motor lF(18, pros::E_MOTOR_GEARSET_18, false);
-pros::Motor lM(19, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor lF(18, pros::E_MOTOR_GEARSET_18, true);
+pros::Motor lM(19, pros::E_MOTOR_GEARSET_18, false);
 pros::Motor lT(20, pros::E_MOTOR_GEARSET_18, true);
 
 // intake
@@ -156,7 +156,7 @@ void competition_initialize() {}
 1: right side
 2: auto skills
 */
-double auton_select = 2;
+double auton_select = 1;
 void autonomous() {
   chassis.setBrakeMode(MOTOR_BRAKE_HOLD);
   if (auton_select == -101) {

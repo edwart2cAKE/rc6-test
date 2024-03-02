@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "rc6-test",
+    "project_name": "rc6-4b",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -350,7 +350,8 @@
       }
     },
     "upload_options": {
-      "description": "rc6-"
+      "description": "rc6-",
+      "slot": 2
     }
   }
 }
